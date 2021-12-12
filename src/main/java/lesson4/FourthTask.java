@@ -1,8 +1,10 @@
+package lesson4;
+
 import java.util.Random;
 import java.util.Scanner;
 
 public class FourthTask {
-  private static final int SIZE = 5;
+  private static final int SIZE = 3;
   private static final int WIN_SIZE = 3;
   private static final char DOT_EMPTY = '•';
   private static final char DOT_HUMAN = 'X';
@@ -144,23 +146,28 @@ public class FourthTask {
   private static boolean checkWin(char symbol) {
     count = 0;
     for (int i = LAST_ROW_NUMBER, j = 0; j < SIZE; j++) {
-      if (symbol == MAP[i][j]){
-        count++;
-      } else count = 0;
-      if (count == WIN_SIZE){
-        return true;
-      }
-
+      if (search(symbol, i, j)) return true;
 
     }
     for (int i = 0, j = LAST_COLUMN_NUMBER; i < SIZE; i++) {
-      if (symbol == MAP[i][j]){
-        count++;
-      } else count = 0;
-      if (count == WIN_SIZE){
-        return true;
-      }
+      if (search(symbol, i, j)) return true;
 
+    }
+    for (int i = 0; i < MAP.length; i++) {
+      for (int j = 0; j < MAP[i].length; j++) {
+        if (i == j){
+          if (search(symbol, i, j)) return true;
+        }
+
+      }
+    }
+    for (int i = 0; i < MAP.length; i++) {
+      for (int j = 0; j < MAP[i].length; j++) {
+        if (i == j){
+          if (search(symbol, i, MAP[i].length - j - 1)) return true;
+        }
+
+      }
     }
     return false;
   }
@@ -202,6 +209,16 @@ public class FourthTask {
   private static void endGame() {
     in.close();
     System.out.println("Ты заходи,если что :)");
+  }
+
+  private static boolean search(char symbol, int i, int j) {
+    if (symbol == MAP[i][j]) {
+      count++;
+    } else count = 0;
+    if (count == WIN_SIZE) {
+      return true;
+    }
+    return false;
   }
 
 }
