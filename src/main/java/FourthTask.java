@@ -2,7 +2,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class FourthTask {
-  private static final int SIZE = 3;
+  private static final int SIZE = 5;
+  private static final int WIN_SIZE = 3;
   private static final char DOT_EMPTY = '•';
   private static final char DOT_HUMAN = 'X';
   private static final char DOT_AI = '0';
@@ -12,6 +13,9 @@ public class FourthTask {
   private static final String HEADER_FIRST_SYMBOL = "♥";
   private static final String SPACE_MAP = " ";
   private static int turnsCount;
+  private static int count;
+  private static int LAST_ROW_NUMBER;
+  private static int LAST_COLUMN_NUMBER;
 
 
   public static void turnGame() {
@@ -95,6 +99,8 @@ public class FourthTask {
       System.out.println("\nВы выбрали занятую ячейку");
     }
     MAP[rowNumber][columnNumber] = DOT_HUMAN;
+    LAST_ROW_NUMBER = rowNumber;
+    LAST_COLUMN_NUMBER = columnNumber;
     turnsCount++;
   }
 
@@ -113,6 +119,8 @@ public class FourthTask {
     } while (!isCellFree(rowNumber,columnNumber));
 
     MAP[rowNumber][columnNumber] = DOT_AI;
+    LAST_ROW_NUMBER = rowNumber;
+    LAST_COLUMN_NUMBER = columnNumber;
     turnsCount++;
   }
 
@@ -134,16 +142,27 @@ public class FourthTask {
 }
 
   private static boolean checkWin(char symbol) {
-    if(MAP[0][0] == symbol && MAP[0][1] == symbol && MAP[0][2] == symbol) return true;
-    if(MAP[1][0] == symbol && MAP[1][1] == symbol && MAP[1][2] == symbol) return true;
-    if(MAP[2][0] == symbol && MAP[2][1] == symbol && MAP[2][2] == symbol) return true;
-    if(MAP[0][0] == symbol && MAP[1][0] == symbol && MAP[2][0] == symbol) return true;
-    if(MAP[0][1] == symbol && MAP[1][1] == symbol && MAP[2][1] == symbol) return true;
-    if(MAP[0][2] == symbol && MAP[1][2] == symbol && MAP[2][2] == symbol) return true;
-    if(MAP[0][0] == symbol && MAP[1][1] == symbol && MAP[2][2] == symbol) return true;
-    if(MAP[2][0] == symbol && MAP[1][1] == symbol && MAP[0][2] == symbol) return true;
-    return false;
+    count = 0;
+    for (int i = LAST_ROW_NUMBER, j = 0; j < SIZE; j++) {
+      if (symbol == MAP[i][j]){
+        count++;
+      } else count = 0;
+      if (count == WIN_SIZE){
+        return true;
+      }
 
+
+    }
+    for (int i = 0, j = LAST_COLUMN_NUMBER; i < SIZE; i++) {
+      if (symbol == MAP[i][j]){
+        count++;
+      } else count = 0;
+      if (count == WIN_SIZE){
+        return true;
+      }
+
+    }
+    return false;
   }
 
   private static boolean checkDraw(char symbol) {
